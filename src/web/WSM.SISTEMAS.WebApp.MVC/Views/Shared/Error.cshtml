@@ -1,0 +1,44 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = Model?.Titulo ?? "Ocorreu um erro";
+}
+
+<div class="flex-grow flex items-center justify-center px-4 py-16">
+    <div class="max-w-lg w-full text-center card shadow-soft p-10">
+        <p class="font-mono text-6xl font-semibold text-brand" aria-hidden="true">
+            @(Model?.ErrorCode > 0 ? Model.ErrorCode : 500)
+        </p>
+
+        <h1 class="mt-5 font-display text-2xl font-bold tracking-tight">
+            @(Model?.Titulo ?? "Ops! Ocorreu um erro inesperado")
+        </h1>
+
+        <p class="mt-2 text-mute">
+            @(Model?.Mensagem ?? "Não foi possível concluir a sua solicitação. Por favor, tente novamente.")
+        </p>
+
+        @if (Model != null && Model.HasErros)
+        {
+            <div class="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-left">
+                <ul class="list-disc ps-5 text-sm text-red-600 space-y-1">
+                    @foreach (var erro in Model.Erros)
+                    {
+                        <li>@erro</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        @if (Model != null && Model.ShowRequestId)
+        {
+            <p class="mt-6 font-mono text-xs text-mute bg-slate-50 border border-line rounded-lg py-2 px-4 inline-block">
+                TRACE <strong class="select-all text-ink font-medium">@Model.RequestId</strong>
+            </p>
+        }
+
+        <div class="mt-8 flex justify-center gap-3 flex-wrap">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Voltar ao início</a>
+            <button type="button" onclick="window.location.reload();" class="btn btn-ghost">Tentar novamente</button>
+        </div>
+    </div>
+</div>

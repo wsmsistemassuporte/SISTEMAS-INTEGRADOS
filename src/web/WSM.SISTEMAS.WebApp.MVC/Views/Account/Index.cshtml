@@ -1,0 +1,50 @@
+@model AccountViewModel
+
+@{
+    ViewData["Title"] = "Minha Conta";
+}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 flex-grow w-full">
+    <p class="eyebrow">→ Conta</p>
+    <h1 class="mt-2 font-display text-4xl md:text-5xl font-bold tracking-tight mb-8">Minha conta</h1>
+
+    <div class="max-w-lg card shadow-soft p-6 sm:p-8">
+        <div class="flex items-center gap-4 pb-6 mb-6 border-b border-line">
+            @{
+                var inicial = string.IsNullOrWhiteSpace(Model.Nome) ? "?" : Model.Nome.Substring(0, 1).ToUpperInvariant();
+            }
+            <span class="grid place-items-center w-14 h-14 rounded-2xl bg-brand-soft text-brand font-display font-extrabold text-xl">@inicial</span>
+            <div class="min-w-0">
+                <p class="font-display font-semibold text-lg text-ink truncate">@(string.IsNullOrWhiteSpace(Model.Nome) ? "—" : Model.Nome)</p>
+                <p class="text-sm text-mute truncate">@(string.IsNullOrWhiteSpace(Model.Email) ? "—" : Model.Email)</p>
+            </div>
+        </div>
+
+        <div class="space-y-5">
+            <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-mute">Nome</span>
+                <p class="mt-1 text-ink">@(string.IsNullOrWhiteSpace(Model.Nome) ? "—" : Model.Nome)</p>
+            </div>
+            <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-mute">E-mail</span>
+                <p class="mt-1 text-ink">@(string.IsNullOrWhiteSpace(Model.Email) ? "—" : Model.Email)</p>
+            </div>
+            <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-mute">Perfis</span>
+                <div class="flex flex-wrap gap-2 mt-2">
+                    @if (Model.Roles.Count > 0)
+                    {
+                        @foreach (var role in Model.Roles)
+                        {
+                            <span class="chip bg-brand-soft border-brand-soft text-brand text-xs">@role</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="chip text-xs">Cliente</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

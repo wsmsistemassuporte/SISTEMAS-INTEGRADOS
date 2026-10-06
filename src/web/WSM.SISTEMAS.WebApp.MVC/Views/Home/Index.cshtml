@@ -1,0 +1,143 @@
+@{
+    ViewData["Title"] = "Início";
+    var destaques = ViewBag.Destaques as List<ProductItemViewModel> ?? [];
+}
+
+@if (TempData["Erro"] is string erro)
+{
+    <div class="border-b border-red-200 bg-red-50 px-4 sm:px-6 py-3 text-sm text-red-700 text-center" role="alert">
+        <span class="font-mono font-semibold">!</span> @erro
+    </div>
+}
+
+@if (TempData["Sucesso"] is string sucesso)
+{
+    <div class="border-b border-green-200 bg-green-50 px-4 sm:px-6 py-3 text-sm text-green-700 text-center" role="status">
+        <span class="font-mono font-semibold">✓</span> @sucesso
+    </div>
+}
+
+<section class="relative overflow-hidden bg-white bp-grid-strong border-b border-line">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-16 md:py-24 grid lg:grid-cols-[1.15fr_1fr] gap-12 lg:gap-16 items-center">
+        <div class="rise">
+            <p class="eyebrow">→ Tecnologia de ponta</p>
+            <h1 class="mt-4 font-display font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.05]">
+                Eletrônicos originais,<br /><span class="text-brand">ao seu alcance.</span>
+            </h1>
+            <p class="mt-5 text-lg text-mute max-w-xl leading-relaxed">
+                Smartphones, notebooks, áudio e TVs com garantia, entrega para todo o Brasil e pagamento facilitado.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-3">
+                <a asp-controller="Produtos" asp-action="Index" class="btn btn-primary btn-lg">
+                    Ver produtos
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                </a>
+                <a asp-controller="Auth" asp-action="Register" class="btn btn-ghost btn-lg">Criar conta</a>
+            </div>
+            <div class="mt-9 flex flex-wrap gap-x-7 gap-y-2 font-mono text-xs text-mute">
+                <span class="inline-flex items-center gap-2"><span class="status-dot bg-ok"></span>PIX NA HORA</span>
+                <span>12X SEM JUROS</span>
+                <span>FRETE GRÁTIS +R$ 150</span>
+            </div>
+        </div>
+
+        <div class="rise rise-2">
+            <div class="relative max-w-sm mx-auto lg:ml-auto w-full">
+                <div class="card shadow-soft-lg p-6 font-mono text-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-[11px] font-semibold tracking-widest text-mute">WSM · SISTEMA</span>
+                        <span class="inline-flex items-center gap-2 text-xs font-semibold text-ok">
+                            <span class="status-dot bg-ok"></span>ONLINE
+                        </span>
+                    </div>
+                    <dl class="divide-y divide-dashed divide-line">
+                        <div class="py-3 flex items-center justify-between gap-4">
+                            <dt class="text-mute">CATÁLOGO</dt>
+                            <dd class="text-ink font-semibold">@destaques.Count EM DESTAQUE</dd>
+                        </div>
+                        <div class="py-3 flex items-center justify-between gap-4">
+                            <dt class="text-mute">PAGAMENTO</dt>
+                            <dd class="text-ink font-semibold">PIX · 12X</dd>
+                        </div>
+                        <div class="py-3 flex items-center justify-between gap-4">
+                            <dt class="text-mute">ENTREGA</dt>
+                            <dd class="text-ink font-semibold">TODO O BRASIL</dd>
+                        </div>
+                        <div class="py-3 flex items-center justify-between gap-4">
+                            <dt class="text-mute">GARANTIA</dt>
+                            <dd class="text-ink font-semibold">ORIGINAIS</dd>
+                        </div>
+                    </dl>
+                    <p class="mt-4 text-[11px] text-mute">— ÚLTIMA ATUALIZAÇÃO @DateTime.Now.ToString("HH:mm")</p>
+                </div>
+                <div class="absolute -top-4 -right-2 sm:-right-4 rotate-2 bg-brand text-white rounded-xl px-3.5 py-2 text-xs font-bold shadow-soft-lg">
+                    FRETE GRÁTIS +R$150
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (destaques.Count > 0)
+{
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 py-14 md:py-20">
+        <div class="flex items-end justify-between gap-4 mb-8">
+            <div>
+                <p class="eyebrow">→ Em alta</p>
+                <h2 class="mt-2 font-display text-3xl md:text-4xl font-bold tracking-tight">Destaques da loja</h2>
+            </div>
+            <a asp-controller="Produtos" asp-action="Index" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-brand hover:text-brand-dark transition-colors">
+                Ver todos <span aria-hidden="true">→</span>
+            </a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            @foreach (var produto in destaques)
+            {
+                <partial name="_ProductCard" model="produto" />
+            }
+        </div>
+        <div class="mt-8 text-center sm:hidden">
+            <a asp-controller="Produtos" asp-action="Index" class="btn btn-ghost">Ver todos os produtos</a>
+        </div>
+    </section>
+}
+
+<section class="border-y border-line bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-14 grid sm:grid-cols-3 gap-10">
+        <div class="flex gap-4">
+            <span class="shrink-0 grid place-items-center w-12 h-12 rounded-xl bg-brand-soft text-brand">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 18.75a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 0 1-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 0 0-3.213-9.193 2.056 2.056 0 0 0-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 0 0-10.026 0 1.106 1.106 0 0 0-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+                </svg>
+            </span>
+            <div>
+                <h3 class="font-display font-semibold text-lg">Entrega rápida</h3>
+                <p class="mt-1 text-sm text-mute leading-relaxed">Envio para todo o Brasil com rastreamento em tempo real.</p>
+            </div>
+        </div>
+        <div class="flex gap-4">
+            <span class="shrink-0 grid place-items-center w-12 h-12 rounded-xl bg-brand-soft text-brand">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+                </svg>
+            </span>
+            <div>
+                <h3 class="font-display font-semibold text-lg">Pagamento facilitado</h3>
+                <p class="mt-1 text-sm text-mute leading-relaxed">Pix, cartão em até 12x sem juros e boleto bancário.</p>
+            </div>
+        </div>
+        <div class="flex gap-4">
+            <span class="shrink-0 grid place-items-center w-12 h-12 rounded-xl bg-brand-soft text-brand">
+                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                </svg>
+            </span>
+            <div>
+                <h3 class="font-display font-semibold text-lg">Garantia real</h3>
+                <p class="mt-1 text-sm text-mute leading-relaxed">Produtos originais com garantia e suporte especializado.</p>
+            </div>
+        </div>
+    </div>
+</section>

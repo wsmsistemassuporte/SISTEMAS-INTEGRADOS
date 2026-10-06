@@ -1,0 +1,6 @@
+@WSM.SISTEMAS.Catalogo.API_HostAddress = http://localhost:5111
+
+GET {{WSM.SISTEMAS.Catalogo.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,72 @@
+@model IEnumerable<ProductItemViewModel>
+
+@{
+    ViewData["Title"] = "Gerenciar Produtos";
+}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 flex-grow w-full">
+    @if (TempData["Erro"] is string erro)
+    {
+        <div class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+            <span class="font-mono font-semibold">!</span> @erro
+        </div>
+    }
+
+    @if (TempData["Sucesso"] is string sucesso)
+    {
+        <div class="mb-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700" role="status">
+            <span class="font-mono font-semibold">✓</span> @sucesso
+        </div>
+    }
+
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+        <div>
+            <p class="eyebrow">→ Administração</p>
+            <h1 class="mt-2 font-display text-4xl font-bold tracking-tight">Gerenciar produtos</h1>
+            <p class="mt-2 text-mute">Área administrativa do catálogo.</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary btn-lg">+ Novo produto</a>
+    </div>
+
+    <div class="card shadow-soft overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-line text-xs uppercase tracking-wider">
+                        <th class="px-4 py-3.5 text-mute font-semibold">Nome</th>
+                        <th class="px-4 py-3.5 text-mute font-semibold">Tipo</th>
+                        <th class="px-4 py-3.5 text-mute font-semibold">Preço</th>
+                        <th class="px-4 py-3.5 text-mute font-semibold">Estoque</th>
+                        <th class="px-4 py-3.5 text-mute font-semibold text-right">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        @foreach (var produto in Model)
+                        {
+                            <tr class="border-b border-line last:border-b-0 hover:bg-slate-50/70 transition-colors">
+                                <td class="px-4 py-3.5 font-medium text-ink">@produto.Nome</td>
+                                <td class="px-4 py-3.5 text-mute">@produto.TipoProduto</td>
+                                <td class="px-4 py-3.5 font-mono font-semibold text-brand">@produto.PrecoFormatado</td>
+                                <td class="px-4 py-3.5 text-mute">@produto.QuantidadeEstoque</td>
+                                <td class="px-4 py-3.5">
+                                    <div class="flex justify-end gap-4 text-sm font-medium">
+                                        <a asp-action="Edit" asp-route-id="@produto.Id" class="text-brand hover:text-brand-dark transition-colors">Editar</a>
+                                        <a asp-action="Delete" asp-route-id="@produto.Id" class="text-danger hover:text-red-700 transition-colors">Excluir</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="5" class="px-4 py-14 text-center text-mute">Nenhum produto cadastrado.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

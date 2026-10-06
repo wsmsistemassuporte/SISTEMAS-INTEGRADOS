@@ -1,0 +1,70 @@
+@model ProductItemViewModel
+
+@{
+    ViewData["Title"] = Model.Nome ?? "Produto";
+}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 md:py-14 flex-grow w-full">
+    <a asp-action="Index" class="inline-flex items-center gap-2 text-sm font-medium text-mute hover:text-brand transition-colors mb-8">
+        <span aria-hidden="true">&larr;</span> Voltar ao catálogo
+    </a>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
+        <div class="card rounded-2xl bg-white flex items-center justify-center min-h-[320px] md:min-h-[440px] p-6 overflow-hidden">
+            @if (!string.IsNullOrWhiteSpace(Model.Imagem))
+            {
+                <img src="@Model.Imagem" alt="@Model.Nome" class="max-h-[480px] w-auto object-contain" />
+            }
+            else
+            {
+                <div class="text-slate-300 grid place-items-center">
+                    <svg class="w-16 h-16" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                    </svg>
+                </div>
+            }
+        </div>
+
+        <div class="flex flex-col">
+            @if (!string.IsNullOrWhiteSpace(Model.TipoProduto))
+            {
+                <div>
+                    <span class="chip bg-brand-soft border-brand-soft text-brand">@Model.TipoProduto</span>
+                </div>
+            }
+            <h1 class="mt-4 font-display text-3xl md:text-4xl font-bold tracking-tight leading-tight">@Model.Nome</h1>
+
+            <div class="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <span class="font-mono text-4xl font-semibold text-brand">@Model.PrecoFormatado</span>
+                <span class="text-sm text-mute">no Pix</span>
+            </div>
+            <p class="mt-1.5 font-mono text-sm text-mute">ou 12x de <strong class="text-ink font-semibold">@Model.ParcelaFormatada</strong> sem juros</p>
+
+            <div class="mt-6">
+                @if (Model.QuantidadeEstoque > 0)
+                {
+                    <span class="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-3.5 py-1.5 text-xs font-semibold text-ok">
+                        <span class="status-dot bg-ok"></span>Em estoque · @Model.QuantidadeEstoque unidades
+                    </span>
+                }
+                else
+                {
+                    <span class="inline-flex items-center gap-2 rounded-full border border-red-200 bg-red-50 px-3.5 py-1.5 text-xs font-semibold text-danger">
+                        <span class="status-dot bg-danger"></span>Esgotado
+                    </span>
+                }
+            </div>
+
+            <div class="mt-8 pt-8 border-t border-line">
+                <h2 class="text-sm font-semibold mb-3">Descrição</h2>
+                <p class="text-mute leading-relaxed">@(string.IsNullOrWhiteSpace(Model.Descricao) ? "Sem descrição disponível." : Model.Descricao)</p>
+            </div>
+
+            <div class="mt-8 font-mono text-xs text-mute flex flex-wrap gap-x-6 gap-y-2">
+                <span>FRETE GRÁTIS ACIMA DE R$ 150</span>
+                <span>ENVIO PARA TODO O BRASIL</span>
+                <span>GARANTIA DE ORIGINALIDADE</span>
+            </div>
+        </div>
+    </div>
+</div>

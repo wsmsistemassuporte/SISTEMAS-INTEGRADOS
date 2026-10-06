@@ -1,0 +1,3 @@
+/* Estilos escopados ao _Layout.cshtml.
+   O design system (tokens, botões, campos) vive em wwwroot/css/site.css.
+   Mantenha este arquivo mínimo — evite regras que sobrescrevam as utilities do Tailwind. */

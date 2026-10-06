@@ -1,0 +1,62 @@
+@model UsuarioFormViewModel
+
+@{
+    ViewData["Title"] = "Novo Usuário";
+}
+
+<div class="max-w-screen-lg mx-auto px-6 py-12 flex-grow w-full">
+    <a asp-action="Index" class="inline-flex items-center gap-2 text-sm font-bold tracking-widest text-slate-500 hover:text-primary transition-colors mb-8">
+        <span aria-hidden="true">&larr;</span> VOLTAR
+    </a>
+
+    <div class="w-12 h-2 bg-primary mb-6"></div>
+    <h1 class="text-6xl font-display text-white tracking-widest mb-10">Novo Usuário</h1>
+
+    <form asp-action="Create" method="post" class="space-y-6">
+        @await Component.InvokeAsync("ValidationSummary")
+
+        <div class="space-y-2">
+            <label asp-for="Nome" class="block text-sm font-bold text-slate-500 tracking-widest">Nome</label>
+            <input asp-for="Nome" class="w-full bg-deep border-2 border-line px-4 py-3 focus:outline-none focus:border-primary transition-colors text-white placeholder-slate-700" placeholder="Ex.: Maria Silva" />
+            <span asp-validation-for="Nome" class="text-primary-light text-xs mt-2 block font-bold tracking-widest"></span>
+        </div>
+
+        <div class="space-y-2">
+            <label asp-for="Email" class="block text-sm font-bold text-slate-500 tracking-widest">E-mail</label>
+            <input asp-for="Email" type="email" class="w-full bg-deep border-2 border-line px-4 py-3 focus:outline-none focus:border-primary transition-colors text-white placeholder-slate-700" placeholder="usuario@wsm.com" />
+            <span asp-validation-for="Email" class="text-primary-light text-xs mt-2 block font-bold tracking-widest"></span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-2">
+                <label asp-for="Senha" class="block text-sm font-bold text-slate-500 tracking-widest">Senha</label>
+                <input asp-for="Senha" type="password" class="w-full bg-deep border-2 border-line px-4 py-3 focus:outline-none focus:border-primary transition-colors text-white placeholder-slate-700" placeholder="Mínimo 6 caracteres" />
+                <span asp-validation-for="Senha" class="text-primary-light text-xs mt-2 block font-bold tracking-widest"></span>
+            </div>
+
+            <div class="space-y-2">
+                <label asp-for="ConfirmarSenha" class="block text-sm font-bold text-slate-500 tracking-widest">Confirmação da Senha</label>
+                <input asp-for="ConfirmarSenha" type="password" class="w-full bg-deep border-2 border-line px-4 py-3 focus:outline-none focus:border-primary transition-colors text-white placeholder-slate-700" placeholder="Repita a senha" />
+                <span asp-validation-for="ConfirmarSenha" class="text-primary-light text-xs mt-2 block font-bold tracking-widest"></span>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <input asp-for="EhAdmin" type="checkbox" class="w-5 h-5 accent-[#2563EB] bg-deep border-2 border-line" />
+            <label asp-for="EhAdmin" class="text-sm font-bold text-slate-300 tracking-widest">Cadastrar como administrador</label>
+        </div>
+
+        <div class="flex gap-4 pt-6">
+            <button type="submit" class="bg-primary text-white px-8 py-3 border-2 border-primary hover:bg-transparent hover:text-primary transition-all text-sm font-bold tracking-widest">
+                Salvar Usuário
+            </button>
+            <a asp-action="Index" class="border-2 border-line text-slate-400 hover:border-primary hover:text-white px-8 py-3 transition-all text-sm font-bold tracking-widest">
+                Cancelar
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

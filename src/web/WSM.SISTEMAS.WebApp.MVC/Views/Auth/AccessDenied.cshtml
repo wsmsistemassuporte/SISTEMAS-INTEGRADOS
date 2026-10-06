@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "Acesso negado";
+}
+
+<div class="flex-grow flex items-center justify-center px-4 py-16">
+    <div class="max-w-lg w-full text-center card shadow-soft p-10">
+        <p class="font-mono text-6xl font-semibold text-brand" aria-hidden="true">403</p>
+        <h1 class="mt-5 font-display text-2xl font-bold tracking-tight">Acesso negado</h1>
+        <p class="mt-2 text-mute">Você não tem permissão para acessar esta página.</p>
+        <div class="mt-8 flex justify-center">
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">Voltar ao início</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,89 @@
+@model IEnumerable<UsuarioItemViewModel>
+
+@{
+    ViewData["Title"] = "Gerenciar Usuários";
+}
+
+<div class="max-w-screen-xl mx-auto px-6 py-12 flex-grow w-full">
+    @if (TempData["Erro"] is string erro)
+    {
+        <div class="bg-red-950/40 border-2 border-red-800 text-red-300 text-sm font-bold tracking-widest px-4 py-3 mb-6">@erro</div>
+    }
+
+    @if (TempData["Sucesso"] is string sucesso)
+    {
+        <div class="bg-emerald-950/40 border-2 border-emerald-800 text-emerald-300 text-sm font-bold tracking-widest px-4 py-3 mb-6">@sucesso</div>
+    }
+
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-10">
+        <div>
+            <div class="w-12 h-2 bg-primary mb-6"></div>
+            <h1 class="text-6xl font-display text-white tracking-widest mb-2">Gerenciar Usuários</h1>
+            <p class="text-slate-500 font-bold tracking-widest">ÁREA ADMINISTRATIVA DE CONTAS.</p>
+        </div>
+        <a asp-action="Create" class="bg-primary text-white px-6 py-3 border-2 border-primary hover:bg-transparent hover:text-primary transition-all text-sm font-bold tracking-widest">
+            + Novo Usuário
+        </a>
+    </div>
+
+    <div class="border-2 border-line overflow-x-auto">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="bg-surface border-b-2 border-line text-xs tracking-widest">
+                    <th class="px-4 py-3 text-slate-400 font-bold">Nome</th>
+                    <th class="px-4 py-3 text-slate-400 font-bold">E-mail</th>
+                    <th class="px-4 py-3 text-slate-400 font-bold">Perfil</th>
+                    <th class="px-4 py-3 text-slate-400 font-bold">Criado em</th>
+                    <th class="px-4 py-3 text-slate-400 font-bold">Status</th>
+                    <th class="px-4 py-3 text-slate-400 font-bold">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Any())
+                {
+                    @foreach (var usuario in Model)
+                    {
+                        <tr class="border-b border-line last:border-b-0 hover:bg-surface/50 transition-colors">
+                            <td class="px-4 py-3 text-white font-bold">@usuario.Nome</td>
+                            <td class="px-4 py-3 text-slate-400 text-sm">@usuario.Email</td>
+                            <td class="px-4 py-3">
+                                @if (usuario.EhAdmin)
+                                {
+                                    <span class="text-primary text-sm font-bold tracking-widest">ADMINISTRADOR</span>
+                                }
+                                else
+                                {
+                                    <span class="text-slate-400 text-sm">Usuário</span>
+                                }
+                            </td>
+                            <td class="px-4 py-3 text-slate-400 text-sm">@usuario.DataCriacao.ToString("dd/MM/yyyy")</td>
+                            <td class="px-4 py-3">
+                                @if (usuario.Bloqueado)
+                                {
+                                    <span class="text-red-400 text-sm font-bold tracking-widest">BLOQUEADO</span>
+                                }
+                                else
+                                {
+                                    <span class="text-emerald-400 text-sm font-bold tracking-widest">ATIVO</span>
+                                }
+                            </td>
+                            <td class="px-4 py-3">
+                                <div class="flex gap-4 text-sm font-bold tracking-widest">
+                                    <a asp-action="Edit" asp-route-id="@usuario.Id" class="text-primary-light hover:text-white transition-colors">Editar</a>
+                                    <a asp-action="ResetPassword" asp-route-id="@usuario.Id" class="text-amber-400 hover:text-amber-300 transition-colors">Resetar Senha</a>
+                                    <a asp-action="Delete" asp-route-id="@usuario.Id" class="text-red-400 hover:text-red-300 transition-colors">Excluir</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="px-4 py-12 text-center text-slate-500 font-bold tracking-widest">NENHUM USUÁRIO CADASTRADO.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/building blocks/">
+    <Project Path="src/building blocks/WSM.SISTEMAS.Core/WSM.SISTEMAS.Core.csproj" />
+    <Project Path="src/building blocks/WSM.SISTEMAS.WebAPI.Core/WSM.SISTEMAS.WebAPI.Core.csproj" />
+  </Folder>
+  <Folder Name="/services/">
+    <Project Path="src/services/WSM.SISTEMAS.Carrinho.API/WSM.SISTEMAS.Carrinho.API.csproj" />
+    <Project Path="src/services/WSM.SISTEMAS.Catalogo.API/WSM.SISTEMAS.Catalogo.API.csproj" />
+    <Project Path="src/services/WSM.SISTEMAS.Cliente.API/WSM.SISTEMAS.Cliente.API.csproj" />
+    <Project Path="src/services/WSM.SISTEMAS.Identidade.API/WSM.SISTEMAS.Identidade.API.csproj" />
+    <Project Path="src/services/WSM.SISTEMAS.Pagamento.API/WSM.SISTEMAS.Pagamento.API.csproj" />
+    <Project Path="src/services/WSM.SISTEMAS.Pedido.API/WSM.SISTEMAS.Pedido.API.csproj" />
+  </Folder>
+  <Folder Name="/web/">
+    <Project Path="src/web/WSM.SISTEMAS.WebApp.MVC/WSM.SISTEMAS.WebApp.MVC.csproj" />
+  </Folder>
+</Solution>

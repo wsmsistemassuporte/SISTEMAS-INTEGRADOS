@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WSM Admin</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Skin WSM Admin — mesma linguagem visual da loja (WSM Store) */
+        :root {
+            --bs-primary: #2563EB;
+            --bs-primary-rgb: 37, 99, 235;
+            --bs-link-color: #2563EB;
+            --bs-link-hover-color: #1D4ED8;
+            --ws-ink: #0F172A;
+            --ws-paper: #F5F8FC;
+            --ws-line: #E3E9F1;
+            --ws-brand: #2563EB;
+            --ws-brand-dark: #1D4ED8;
+            --ws-brand-soft: #EFF4FF;
+            --ws-mute: #64748B;
+            --ws-ok: #16A34A;
+            --ws-danger: #DC2626;
+            --ws-grafite: #0B1220;
+        }
+
+        body {
+            background-color: var(--ws-paper);
+            color: var(--ws-ink);
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: "Archivo", "Inter", sans-serif;
+        }
+
+        /* Cabeçalho */
+        .amz-header-main {
+            background-color: #ffffff;
+            padding: 12px 24px;
+            color: var(--ws-ink);
+            border-bottom: 1px solid var(--ws-line);
+        }
+
+        .amz-brand {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: var(--ws-ink);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .amz-brand:hover {
+            color: var(--ws-ink);
+        }
+
+        .amz-brand-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background-color: var(--ws-brand);
+            color: #ffffff;
+            font-family: "Archivo", sans-serif;
+            font-weight: 800;
+            font-size: 0.7rem;
+            letter-spacing: -0.02em;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+
+        .amz-brand span {
+            color: var(--ws-mute);
+            font-weight: 500;
+        }
+
+        .amz-header-sub {
+            background-color: #ffffff;
+            padding: 8px 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--ws-line);
+        }
+
+        .amz-nav-link {
+            color: #475569;
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            padding: 6px 14px;
+            border: 1px solid transparent;
+            border-radius: 9999px;
+            transition: all 0.15s ease;
+        }
+
+        .amz-nav-link:hover {
+            background-color: #F1F5F9;
+            color: var(--ws-ink);
+        }
+
+        .amz-nav-link.active {
+            background-color: var(--ws-brand-soft);
+            color: var(--ws-brand);
+            font-weight: 600;
+        }
+
+        .amz-nav-link i {
+            margin-right: 6px;
+        }
+
+        /* Botões */
+        .btn-amazon-primary {
+            background-color: var(--ws-brand);
+            border: 1px solid var(--ws-brand);
+            color: #ffffff;
+            font-weight: 600;
+            border-radius: 10px;
+            padding: 8px 18px;
+            transition: background-color 0.15s ease, border-color 0.15s ease;
+        }
+
+        .btn-amazon-primary:hover {
+            background-color: var(--ws-brand-dark);
+            border-color: var(--ws-brand-dark);
+            color: #ffffff;
+        }
+
+        .btn-amazon-secondary {
+            background-color: #ffffff;
+            border: 1px solid var(--ws-line);
+            color: var(--ws-ink);
+            font-weight: 500;
+            border-radius: 10px;
+            padding: 8px 16px;
+            transition: all 0.15s ease;
+        }
+
+        .btn-amazon-secondary:hover {
+            background-color: #F8FAFC;
+            border-color: var(--ws-brand);
+            color: var(--ws-brand);
+        }
+
+        .btn-amazon-danger {
+            background-color: #FEF2F2;
+            border: 1px solid #FECACA;
+            color: var(--ws-danger);
+            font-weight: 600;
+            border-radius: 10px;
+        }
+
+        .btn-amazon-danger:hover {
+            background-color: #FEE2E2;
+            border-color: #FCA5A5;
+            color: #B91C1C;
+        }
+
+        /* Container e cards */
+        .amz-main-container {
+            flex: 1;
+            padding: 24px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .amz-card {
+            background-color: #ffffff;
+            border: 1px solid var(--ws-line);
+            border-radius: 16px;
+            box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.05);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* Tabela */
+        .amz-table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+        }
+
+        .amz-table th {
+            background-color: #F8FAFC;
+            border-bottom: 1px solid var(--ws-line);
+            color: var(--ws-mute);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 12px 16px;
+        }
+
+        .amz-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #EEF2F7;
+            vertical-align: middle;
+        }
+
+        .amz-table tr:hover td {
+            background-color: #FAFCFF;
+        }
+
+        /* Thumbnail */
+        .amz-thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            background-color: #ffffff;
+            border: 1px solid var(--ws-line);
+            border-radius: 10px;
+            padding: 4px;
+        }
+
+        /* Preço — voz de dados em mono */
+        .amz-price {
+            color: var(--ws-brand);
+            font-weight: 600;
+            font-size: 1.05rem;
+            font-family: "IBM Plex Mono", ui-monospace, monospace;
+        }
+
+        /* Badges de estoque */
+        .badge-stock-in {
+            background-color: #F0FDF4;
+            color: var(--ws-ok);
+            border: 1px solid #BBF7D0;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            white-space: nowrap;
+        }
+
+        .badge-stock-out {
+            background-color: #FEF2F2;
+            color: #B91C1C;
+            border: 1px solid #FECACA;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            white-space: nowrap;
+        }
+
+        /* Formulários (Bootstrap re-skin) */
+        .form-control,
+        .form-select {
+            border-radius: 10px;
+            border-color: var(--ws-line);
+            padding: 0.55rem 0.9rem;
+            font-size: 0.9rem;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--ws-brand);
+            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.12);
+        }
+
+        .input-group-text {
+            border-radius: 10px;
+            border-color: var(--ws-line);
+            background-color: #F8FAFC;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #334155;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--ws-brand);
+            border-color: var(--ws-brand);
+        }
+
+        .form-check-input:focus {
+            border-color: var(--ws-brand);
+            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.12);
+        }
+
+        /* Modal */
+        .modal-content {
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 20px 60px rgba(15, 23, 42, 0.18);
+        }
+
+        /* Footer */
+        .amz-footer {
+            background-color: var(--ws-grafite);
+            color: #94A3B8;
+            padding: 16px;
+            text-align: center;
+            font-size: 0.85rem;
+            margin-top: auto;
+        }
+
+        .amz-footer a {
+            color: #93C5FD;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Principal -->
+    <header>
+        <div class="amz-header-main d-flex align-items-center justify-content-between">
+            <a href="/" class="amz-brand">
+                <span class="amz-brand-icon">WSM</span> Admin<span>· Painel</span>
+            </a>
+
+            <div class="d-flex align-items-center gap-3">
+                <a href="/" class="btn btn-sm btn-amazon-secondary">
+                    <i class="fa-solid fa-store me-1"></i> Ir para a Loja
+                </a>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="d-inline-flex align-items-center justify-content-center rounded-circle text-white fw-bold" style="width:32px;height:32px;background-color:var(--ws-brand-soft);color:var(--ws-brand);font-size:.8rem;">
+                        @(string.IsNullOrWhiteSpace(User.Identity?.Name) ? "?" : User.Identity.Name.Substring(0, 1).ToUpperInvariant())
+                    </span>
+                    <strong class="small">@User.Identity?.Name</strong>
+                </div>
+            </div>
+        </div>
+
+        <div class="amz-header-sub">
+            <a href="/Admin/Produtos" class="amz-nav-link active">
+                <i class="fa-solid fa-box"></i> Gestão de Produtos
+            </a>
+            <a href="/Admin/Produtos/Novo" class="amz-nav-link">
+                <i class="fa-solid fa-plus-circle"></i> Cadastrar Produto
+            </a>
+        </div>
+    </header>
+
+    <!-- Conteúdo da Aplicação -->
+    <main class="amz-main-container">
+
+        <!-- Notificações TempData -->
+        @if (TempData["MensagemSucesso"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show d-flex align-items-center mb-4 rounded-4" role="alert">
+                <i class="fa-solid fa-circle-check me-2 fs-5"></i>
+                <div>@Html.Raw(TempData["MensagemSucesso"])</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (TempData["MensagemErro"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show d-flex align-items-center mb-4 rounded-4" role="alert">
+                <i class="fa-solid fa-triangle-exclamation me-2 fs-5"></i>
+                <div>@Html.Raw(TempData["MensagemErro"])</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="amz-footer">
+        <div class="container">
+            <p class="mb-0">&copy; @DateTime.Now.Year WSM Sistemas · Painel de Controle Administrativo de Produtos.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

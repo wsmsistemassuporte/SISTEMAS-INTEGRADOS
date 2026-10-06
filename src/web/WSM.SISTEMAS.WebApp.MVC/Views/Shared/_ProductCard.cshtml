@@ -1,0 +1,42 @@
+@model ProductItemViewModel
+
+<a asp-controller="Produtos" asp-action="Details" asp-route-id="@Model.Id"
+   class="card group flex flex-col overflow-hidden transition duration-200 hover:shadow-soft-lg hover:-translate-y-0.5">
+    <div class="relative aspect-[4/3] overflow-hidden bg-slate-100 border-b border-line">
+        @if (!string.IsNullOrWhiteSpace(Model.Imagem))
+        {
+            <img src="@Model.Imagem" alt="@Model.Nome" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.04]" loading="lazy" />
+        }
+        else
+        {
+            <div class="w-full h-full grid place-items-center text-slate-300">
+                <svg class="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                </svg>
+            </div>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.TipoProduto))
+        {
+            <span class="absolute top-3 left-3 rounded-full bg-white/95 px-2.5 py-1 text-[11px] font-semibold text-slate-600 shadow-soft">@Model.TipoProduto</span>
+        }
+    </div>
+    <div class="flex flex-col flex-grow p-5">
+        <h3 class="font-display font-semibold text-lg text-ink leading-snug">@Model.Nome</h3>
+        <p class="mt-1.5 text-sm text-mute leading-relaxed line-clamp-2 flex-grow">@Model.Descricao</p>
+        <div class="mt-4 pt-4 border-t border-line flex items-end justify-between gap-3 font-mono">
+            <span class="text-lg font-semibold text-brand leading-none">@Model.PrecoFormatado</span>
+            @if (Model.QuantidadeEstoque > 0)
+            {
+                <span class="inline-flex items-center gap-1.5 text-[11px] font-medium text-ok">
+                    <span class="status-dot bg-ok"></span>@Model.QuantidadeEstoque UN
+                </span>
+            }
+            else
+            {
+                <span class="inline-flex items-center gap-1.5 text-[11px] font-medium text-danger">
+                    <span class="status-dot bg-danger"></span>ESGOTADO
+                </span>
+            }
+        </div>
+    </div>
+</a>

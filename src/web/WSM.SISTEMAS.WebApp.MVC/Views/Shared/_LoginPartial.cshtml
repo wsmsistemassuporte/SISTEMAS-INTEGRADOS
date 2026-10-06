@@ -1,0 +1,37 @@
+@using System.Security.Claims
+@using WSM.SISTEMAS.Core.Usuarios
+@inject IAspNetUser AspNetUser
+
+@if (AspNetUser.EstaAutenticado())
+{
+    var inicial = string.IsNullOrWhiteSpace(AspNetUser.Name) ? "?" : AspNetUser.Name.Substring(0, 1).ToUpperInvariant();
+    <div class="relative" id="user-menu">
+        <button id="user-menu-button" type="button" aria-expanded="false" aria-haspopup="true"
+                class="flex items-center gap-2 rounded-full border border-line bg-white pl-1 pr-3 py-1 text-sm font-medium text-ink hover:border-brand transition-colors">
+            <span class="grid place-items-center w-7 h-7 rounded-full bg-brand-soft text-brand text-xs font-bold">@inicial</span>
+            <span class="hidden sm:inline max-w-[120px] truncate">@AspNetUser.Name</span>
+            <svg class="w-3.5 h-3.5 text-mute" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+            </svg>
+        </button>
+        <div id="user-menu-panel" class="hidden absolute right-0 mt-2 w-60 card shadow-soft-lg p-1.5 z-50">
+            <div class="px-3 py-2.5 mb-1 border-b border-line">
+                <p class="text-sm font-semibold text-ink truncate">@AspNetUser.Name</p>
+                <p class="text-xs text-mute truncate">@AspNetUser.ObterUserEmail()</p>
+            </div>
+            <a asp-controller="Account" asp-action="Index" class="block px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-ink transition-colors">
+                Minha conta
+            </a>
+            <form asp-controller="Auth" asp-action="Logout" method="post" class="p-0">
+                <button type="submit" class="w-full text-left px-3 py-2 rounded-lg text-sm font-medium text-danger hover:bg-red-50 transition-colors">Sair</button>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="flex items-center gap-2.5">
+        <a class="px-3 py-2 rounded-lg text-sm font-medium text-mute hover:text-ink hover:bg-slate-100 transition-colors" asp-controller="Auth" asp-action="Login">Entrar</a>
+        <a class="btn btn-primary" asp-controller="Auth" asp-action="Register">Criar conta</a>
+    </div>
+}

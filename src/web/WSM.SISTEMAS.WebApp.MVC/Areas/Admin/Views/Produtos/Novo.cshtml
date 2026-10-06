@@ -1,0 +1,124 @@
+@model WSM.SISTEMAS.WebApp.MVC.Models.Produtos.ProductFormViewModel
+
+@{
+    ViewData["Title"] = "Cadastrar Novo Produto";
+    var categorias = ViewBag.Categorias as List<string> ?? new List<string>();
+}
+
+<div class="mb-3">
+    <a asp-action="Index" class="text-decoration-none text-muted small"><i class="fa-solid fa-arrow-left me-1"></i> Voltar para a lista de produtos</a>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="h3 fw-bold mb-1"><i class="fa-solid fa-plus-circle me-2 text-primary"></i> Cadastrar Novo Produto</h2>
+        <p class="text-muted small mb-0">Preencha as informações do produto para incluí-lo no catálogo da loja.</p>
+    </div>
+</div>
+
+<form asp-action="Novo" method="post" enctype="multipart/form-data">
+    @await Component.InvokeAsync("ValidationSummary")
+
+    <div class="row">
+        <!-- Coluna Esquerda: Informações Principais -->
+        <div class="col-lg-8">
+            <div class="amz-card">
+                <h5 class="fw-bold border-bottom pb-3 mb-4">Informações do Produto</h5>
+
+                <div class="mb-3">
+                    <label asp-for="Nome" class="form-label fw-semibold"></label>
+                    <input asp-for="Nome" class="form-control" placeholder="Ex: Smartphone Galaxy S24 Ultra 512GB" />
+                    <span asp-validation-for="Nome" class="text-danger small"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="TipoProduto" class="form-label fw-semibold"></label>
+                        <input asp-for="TipoProduto" class="form-control" list="listCategorias" placeholder="Selecione ou digite a categoria..." />
+                        <datalist id="listCategorias">
+                            @foreach (var cat in categorias)
+                            {
+                                <option value="@cat"></option>
+                            }
+                        </datalist>
+                        <span asp-validation-for="TipoProduto" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Ativo" class="form-label fw-semibold d-block">Visibilidade</label>
+                        <div class="form-check form-switch mt-2">
+                            <input class="form-check-input" type="checkbox" asp-for="Ativo" id="ativoSwitch" />
+                            <label class="form-check-label fw-semibold" for="ativoSwitch">Produto Ativo no Catálogo</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Valor" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <span class="input-group-text">R$</span>
+                            <input asp-for="Valor" class="form-control" placeholder="0,00" type="number" step="0.01" />
+                        </div>
+                        <span asp-validation-for="Valor" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Estoque" class="form-label fw-semibold"></label>
+                        <input asp-for="Estoque" class="form-control" placeholder="0" type="number" />
+                        <span asp-validation-for="Estoque" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Descricao" class="form-label fw-semibold"></label>
+                    <textarea asp-for="Descricao" class="form-control" rows="5" placeholder="Descreva os principais recursos e diferenciais do produto..."></textarea>
+                    <span asp-validation-for="Descricao" class="text-danger small"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coluna Direita: Imagem do Produto -->
+        <div class="col-lg-4">
+            <div class="amz-card text-center">
+                <h5 class="fw-bold border-bottom pb-3 mb-4 text-start">Imagem do Produto</h5>
+
+                <div class="mb-3">
+                    <div class="border rounded p-3 bg-light d-flex justify-content-center align-items-center" style="min-height: 220px; max-height: 280px;">
+                        <img id="imgPreview" src="https://via.placeholder.com/300x220?text=Pré-visualização" alt="Preview da Imagem" class="img-fluid rounded" style="max-height: 200px; object-fit: contain;" />
+                    </div>
+                </div>
+
+                <div class="mb-3 text-start">
+                    <label asp-for="ImagemUpload" class="form-label fw-semibold">Selecionar Arquivo</label>
+                    <input asp-for="ImagemUpload" class="form-control" type="file" accept="image/*" onchange="exibirPreviewImagem(this)" />
+                    <span asp-validation-for="ImagemUpload" class="text-danger small"></span>
+                    <small class="text-muted d-block mt-1">Formatos aceitos: JPG, PNG, WEBP (Máx: 5MB)</small>
+                </div>
+            </div>
+
+            <!-- Card de Ações -->
+            <div class="amz-card">
+                <button type="submit" class="btn btn-amazon-primary w-100 mb-2 py-2 fs-6">
+                    <i class="fa-solid fa-floppy-disk me-1"></i> Salvar e Publicar Produto
+                </button>
+                <a asp-action="Index" class="btn btn-amazon-secondary w-100 py-2">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function exibirPreviewImagem(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('imgPreview').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+}

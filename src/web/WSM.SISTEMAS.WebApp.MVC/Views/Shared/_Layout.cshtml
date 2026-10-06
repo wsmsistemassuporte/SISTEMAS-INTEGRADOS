@@ -1,0 +1,159 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - WSM Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                        display: ['Archivo', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                        mono: ['IBM Plex Mono', 'ui-monospace', 'monospace'],
+                    },
+                    colors: {
+                        ink: '#0F172A',
+                        paper: '#F5F8FC',
+                        brand: '#2563EB',
+                        'brand-dark': '#1D4ED8',
+                        'brand-soft': '#EFF4FF',
+                        signal: '#06B6D4',
+                        line: '#E3E9F1',
+                        mute: '#64748B',
+                        grafite: '#0B1220',
+                        ok: '#16A34A',
+                        danger: '#DC2626'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WSM.SISTEMAS.WebApp.MVC.styles.css" asp-append-version="true" />
+</head>
+<body class="bg-paper text-ink font-sans antialiased min-h-screen flex flex-col">
+    <div class="h-1 bg-gradient-to-r from-brand via-signal to-brand" aria-hidden="true"></div>
+
+    <header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-line">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4" aria-label="Principal">
+            <a class="flex items-center gap-2.5 shrink-0" asp-controller="Home" asp-action="Index" aria-label="WSM Store — Início">
+                <span class="grid place-items-center w-9 h-9 rounded-xl bg-brand text-white font-display font-extrabold text-sm tracking-tight shadow-soft">WSM</span>
+                <span class="text-lg font-bold tracking-tight leading-none">WSM <span class="font-medium text-mute">Store</span></span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-1 font-medium text-sm">
+                @{
+                    var nav = new (string texto, string controller, string acao, string area)[] {
+                        ("Início", "Home", "Index", ""),
+                        ("Produtos", "Produtos", "Index", ""),
+                        ("Minha Conta", "Account", "Index", "")
+                    };
+                    var adminNav = new (string texto, string controller, string acao, string area)[] {
+                        ("Admin", "AdminProdutos", "Index", ""),
+                        ("Usuários", "AdminUsuarios", "Index", "")
+                    };
+                }
+                @foreach (var item in nav)
+                {
+                    var ativo = string.Equals(controller, item.controller, StringComparison.OrdinalIgnoreCase);
+                    <a asp-controller="@item.controller" asp-action="@item.acao"
+                       class="px-3 py-2 rounded-lg transition-colors @(ativo ? "text-brand bg-brand-soft" : "text-mute hover:text-ink hover:bg-slate-100")"
+                       aria-current="@(ativo ? "page" : null)">@item.texto</a>
+                }
+                @if (User.IsInRole("Admin"))
+                {
+                    @foreach (var item in adminNav)
+                    {
+                        var ativo = string.Equals(controller, item.controller, StringComparison.OrdinalIgnoreCase);
+                        <a asp-controller="@item.controller" asp-action="@item.acao"
+                           class="px-3 py-2 rounded-lg transition-colors @(ativo ? "text-brand bg-brand-soft" : "text-mute hover:text-ink hover:bg-slate-100")"
+                           aria-current="@(ativo ? "page" : null)">@item.texto</a>
+                    }
+                }
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div class="hidden md:block">
+                    <partial name="_LoginPartial" />
+                </div>
+                <button id="menu-toggle" type="button" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg border border-line text-ink hover:border-brand transition-colors" aria-expanded="false" aria-controls="menu-mobile" aria-label="Abrir menu">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5M3.75 17.25h16.5" />
+                    </svg>
+                </button>
+            </div>
+        </nav>
+
+        <div id="menu-mobile" class="hidden md:hidden border-t border-line bg-white px-4 py-4">
+            <nav class="flex flex-col gap-1 font-medium text-sm" aria-label="Menu móvel">
+                <a asp-controller="Home" asp-action="Index" class="px-3 py-2.5 rounded-lg text-mute hover:bg-slate-100 hover:text-ink transition-colors">Início</a>
+                <a asp-controller="Produtos" asp-action="Index" class="px-3 py-2.5 rounded-lg text-mute hover:bg-slate-100 hover:text-ink transition-colors">Produtos</a>
+                <a asp-controller="Account" asp-action="Index" class="px-3 py-2.5 rounded-lg text-mute hover:bg-slate-100 hover:text-ink transition-colors">Minha Conta</a>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-controller="AdminProdutos" asp-action="Index" class="px-3 py-2.5 rounded-lg text-mute hover:bg-slate-100 hover:text-ink transition-colors">Admin</a>
+                    <a asp-controller="AdminUsuarios" asp-action="Index" class="px-3 py-2.5 rounded-lg text-mute hover:bg-slate-100 hover:text-ink transition-colors">Usuários</a>
+                }
+                <div class="mt-3 pt-3 border-t border-line">
+                    <partial name="_LoginPartial" />
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main role="main" class="flex-grow flex flex-col">
+        @RenderBody()
+    </main>
+
+    <footer class="bg-grafite text-slate-400 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-14 grid grid-cols-1 md:grid-cols-4 gap-10">
+            <div>
+                <div class="flex items-center gap-2.5 mb-4">
+                    <span class="grid place-items-center w-8 h-8 rounded-lg bg-brand text-white font-display font-extrabold text-xs">WSM</span>
+                    <span class="text-base font-bold tracking-tight text-white">WSM <span class="font-medium text-slate-400">Store</span></span>
+                </div>
+                <p class="text-sm leading-relaxed">Tecnologia de ponta ao seu alcance. Smartphones, notebooks, áudio, TVs e acessórios com garantia e entrega rápida.</p>
+            </div>
+            <div>
+                <h5 class="text-white text-sm font-semibold mb-4">Atendimento</h5>
+                <p class="font-mono text-xs mb-1.5">SEG–SEX · 08H–18H</p>
+                <p class="font-mono text-xs mb-3">SÁB · 08H–13H</p>
+                <p class="font-mono text-xs text-blue-300">sac@wsmstore.com.br</p>
+            </div>
+            <div>
+                <h5 class="text-white text-sm font-semibold mb-4">Formas de pagamento</h5>
+                <p class="font-mono text-xs mb-1.5">PIX</p>
+                <p class="font-mono text-xs mb-1.5">CARTÃO · ATÉ 12X SEM JUROS</p>
+                <p class="font-mono text-xs">BOLETO BANCÁRIO</p>
+            </div>
+            <div>
+                <h5 class="text-white text-sm font-semibold mb-4">Entrega</h5>
+                <p class="font-mono text-xs mb-1.5">ENVIO PARA TODO O BRASIL</p>
+                <p class="font-mono text-xs mb-1.5">FRETE GRÁTIS ACIMA DE R$ 150</p>
+                <p class="font-mono text-xs">RASTREAMENTO EM TEMPO REAL</p>
+            </div>
+        </div>
+
+        <div class="border-t border-white/10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-slate-500">
+                <span>&copy; @DateTime.Now.Year WSM Store · Todos os direitos reservados</span>
+                <a asp-controller="Home" asp-action="Privacy" class="font-medium text-slate-400 hover:text-white transition-colors">Política de Privacidade</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

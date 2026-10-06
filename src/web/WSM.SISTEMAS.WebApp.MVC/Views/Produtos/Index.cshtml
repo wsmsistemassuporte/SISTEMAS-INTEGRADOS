@@ -1,0 +1,63 @@
+@model ProdutosViewModel
+
+@{
+    ViewData["Title"] = "Produtos";
+}
+
+@if (TempData["Erro"] is string erro)
+{
+    <div class="border-b border-red-200 bg-red-50 px-4 sm:px-6 py-3 text-sm text-red-700 text-center" role="alert">
+        <span class="font-mono font-semibold">!</span> @erro
+    </div>
+}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16 flex-grow w-full">
+    <div class="mb-8 md:mb-10">
+        <p class="eyebrow">→ Catálogo</p>
+        <h1 class="mt-2 font-display text-4xl md:text-5xl font-bold tracking-tight">Produtos</h1>
+        <p class="mt-2 text-mute">Tecnologia de ponta para todos os gostos.</p>
+    </div>
+
+    @if (Model.Categorias.Any())
+    {
+        <div class="flex flex-wrap gap-2.5 mb-10">
+            <a asp-action="Index"
+               class="chip @(Model.CategoriaSelecionada == "Todos" ? "chip-active" : "")">
+                Todos
+            </a>
+            @foreach (var categoria in Model.Categorias)
+            {
+                <a asp-action="Index" asp-route-categoria="@categoria"
+                   class="chip @(Model.CategoriaSelecionada == categoria ? "chip-active" : "")">
+                    @categoria
+                </a>
+            }
+        </div>
+    }
+
+    @if (Model.Produtos.Any())
+    {
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            @foreach (var produto in Model.Produtos)
+            {
+                <partial name="_ProductCard" model="produto" />
+            }
+        </div>
+    }
+    else
+    {
+        <div class="card rounded-2xl border-dashed text-center py-16 md:py-24 px-6">
+            <div class="mx-auto grid place-items-center w-14 h-14 rounded-2xl bg-brand-soft text-brand mb-5">
+                <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                </svg>
+            </div>
+            <h2 class="font-display text-xl font-semibold">Nenhum produto encontrado</h2>
+            <p class="mt-1.5 text-sm text-mute">Tente outra categoria ou volte mais tarde.</p>
+            <div class="mt-6 flex justify-center gap-3">
+                <a asp-action="Index" class="btn btn-primary">Ver todos os produtos</a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-ghost">Voltar ao início</a>
+            </div>
+        </div>
+    }
+</div>

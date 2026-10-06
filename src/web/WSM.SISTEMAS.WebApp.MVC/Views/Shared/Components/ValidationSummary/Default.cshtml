@@ -1,0 +1,28 @@
+@model List<string>
+
+@if (Model.Count > 0)
+{
+    <div class="rounded-xl border border-red-200 bg-red-50 p-4" role="alert">
+        <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-red-600 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-7 4a1 1 0 1 1-2 0 1 1 0 0 1 2 0Zm-1-9a1 1 0 0 0-1 1v4a1 1 0 1 0 2 0V6a1 1 0 0 0-1-1Z" clip-rule="evenodd" />
+            </svg>
+            <div class="flex-1 min-w-0 text-sm">
+                @if (Model.Count == 1)
+                {
+                    <p class="text-red-700 font-medium">@Model[0]</p>
+                }
+                else
+                {
+                    <p class="text-red-700 font-medium mb-1.5">Corrija os erros abaixo:</p>
+                    <ul class="list-disc list-inside space-y-0.5 text-red-600">
+                        @foreach (var error in Model)
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    </div>
+}
