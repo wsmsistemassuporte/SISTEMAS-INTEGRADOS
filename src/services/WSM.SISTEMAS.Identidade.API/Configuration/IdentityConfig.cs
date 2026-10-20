@@ -10,10 +10,17 @@ using WSM.SISTEMAS.Identidade.API.Services;
 
 namespace WSM.SISTEMAS.Identidade.API.Configuration
 {
+    /// <summary>
+    /// Centraliza a configuração de identidade, autenticação JWT e autorização da API.
+    /// </summary>
     public static class IdentityConfig
     {
+        /// <summary>
+        /// Registra persistência do Identity, políticas de senha e validação de token JWT.
+        /// </summary>
         public static WebApplicationBuilder AddIdentityConfiguration(this WebApplicationBuilder builder)
         {
+            // Conecta o Identity ao banco configurado da aplicação.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             if (string.IsNullOrWhiteSpace(connectionString))
             {
@@ -26,6 +33,7 @@ namespace WSM.SISTEMAS.Identidade.API.Configuration
             builder.Services
                 .AddIdentity<ApplicationUser, ApplicationRole>(options =>
                 {
+                    // Define política de senha e regras básicas de usuário.
                     options.Password.RequiredLength = 8;
                     options.Password.RequireDigit = true;
                     options.Password.RequireLowercase = true;
@@ -39,6 +47,7 @@ namespace WSM.SISTEMAS.Identidade.API.Configuration
                 .AddEntityFrameworkStores<AutenticarDbContext>()
                 .AddDefaultTokenProviders();
 
+            // Lê e registra as opções de JWT vindas da configuração.
             var jwtSection = builder.Configuration.GetSection(nameof(JwtSettings));
             builder.Services.Configure<JwtSettings>(jwtSection);
 
@@ -50,8 +59,19 @@ namespace WSM.SISTEMAS.Identidade.API.Configuration
                 throw new InvalidOperationException("JwtSettings:SigningKey nao foi configurado.");
             }
 
+            if (string.IsNullOrWhiteSpace(jwtSettings.Issuer))
+            {
+                throw new InvalidOperationException("JwtSettings:Issuer nao foi configurado.");
+            }
+
+            if (string.IsNullOrWhiteSpace(jwtSettings.Audience))
+            {
+                throw new InvalidOperationException("JwtSettings:Audience nao foi configurado.");
+            }
+
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SigningKey));
 
+            // Configura autenticação via Bearer Token com validações de segurança.
             builder.Services
                 .AddAuthentication(options =>
                 {
@@ -75,6 +95,7 @@ namespace WSM.SISTEMAS.Identidade.API.Configuration
                     };
                 });
 
+            // Habilita autorização e registra serviços de emissão/renovação de token.
             builder.Services.AddAuthorization();
             builder.Services.AddScoped<ITokenService, TokenService>();
             builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();

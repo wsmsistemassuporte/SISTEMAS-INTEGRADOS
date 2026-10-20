@@ -41,13 +41,13 @@ namespace WSM.SISTEMAS.WebAPI.Core.Logging
             app.UseSerilogRequestLogging(options =>
             {
                 options.GetLevel = (httpContext, elapsed, exception) =>
-                    exception is not null || httpContext.Response.StatusCode >= StatusCodes.Status500InternalServerError
+                    exception is not null || httpContext.Response.StatusCode >= StatusCodes.Status400BadRequest
                         ? LogEventLevel.Error
                         : LogEventLevel.Verbose;
 
                 options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
                 {
-                    diagnosticContext.Set("TraceId", httpContext.TraceIdentifier);
+                    diagnosticContext.Set("TraceId", System.Diagnostics.Activity.Current?.Id ?? httpContext.TraceIdentifier);
                     diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value ?? string.Empty);
                     diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
                 };

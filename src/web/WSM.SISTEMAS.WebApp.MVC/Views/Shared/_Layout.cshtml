@@ -1,3 +1,6 @@
+@using WSM.SISTEMAS.Core.Usuarios
+@inject IAspNetUser AspNetUser
+
 @{
     var controller = ViewContext.RouteData.Values["controller"]?.ToString();
 }
@@ -70,7 +73,7 @@
                        class="px-3 py-2 rounded-lg transition-colors @(ativo ? "text-brand bg-brand-soft" : "text-mute hover:text-ink hover:bg-slate-100")"
                        aria-current="@(ativo ? "page" : null)">@item.texto</a>
                 }
-                @if (User.IsInRole("Admin"))
+                @if (AspNetUser.PossuiRole("Admin"))
                 {
                     @foreach (var item in adminNav)
                     {
@@ -99,7 +102,7 @@
                 <a asp-controller="Home" asp-action="Index" class="px-3 py-2.5 rounded-lg text-mute hover:bg-slate-100 hover:text-ink transition-colors">Início</a>
                 <a asp-controller="Produtos" asp-action="Index" class="px-3 py-2.5 rounded-lg text-mute hover:bg-slate-100 hover:text-ink transition-colors">Produtos</a>
                 <a asp-controller="Account" asp-action="Index" class="px-3 py-2.5 rounded-lg text-mute hover:bg-slate-100 hover:text-ink transition-colors">Minha Conta</a>
-                @if (User.IsInRole("Admin"))
+                @if (AspNetUser.PossuiRole("Admin"))
                 {
                     <a asp-controller="AdminProdutos" asp-action="Index" class="px-3 py-2.5 rounded-lg text-mute hover:bg-slate-100 hover:text-ink transition-colors">Admin</a>
                     <a asp-controller="AdminUsuarios" asp-action="Index" class="px-3 py-2.5 rounded-lg text-mute hover:bg-slate-100 hover:text-ink transition-colors">Usuários</a>

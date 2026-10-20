@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using WSM.SISTEMAS.WebApp.MVC.Models.Auth;
@@ -46,18 +47,18 @@ namespace WSM.SISTEMAS.WebApp.MVC.Services
             {
                 try
                 {
-                    //var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
-                    //if (handler.CanReadToken(authResult.AccessToken))
-                    //{
-                    //    var jwtToken = handler.ReadJwtToken(authResult.AccessToken);
-                    //    foreach (var claim in jwtToken.Claims)
-                    //    {
-                    //        if (!claims.Any(c => c.Type == claim.Type && c.Value == claim.Value))
-                    //        {
-                    //            claims.Add(new Claim(claim.Type, claim.Value));
-                    //        }
-                    //    }
-                    //}
+                    var handler = new JwtSecurityTokenHandler();
+                    if (handler.CanReadToken(authResult.AccessToken))
+                    {
+                        var jwtToken = handler.ReadJwtToken(authResult.AccessToken);
+                        foreach (var claim in jwtToken.Claims)
+                        {
+                            if (!claims.Any(c => c.Type == claim.Type && c.Value == claim.Value))
+                            {
+                                claims.Add(new Claim(claim.Type, claim.Value));
+                            }
+                        }
+                    }
                 }
                 catch
                 {

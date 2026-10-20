@@ -12,7 +12,7 @@ namespace WSM.SISTEMAS.WebApp.MVC.Configuration
                 app.UseHsts();
             }
 
-            app.UseStatusCodePagesWithRedirects("/Home/Error?statusCode={0}");
+            app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
             app.UseHttpsRedirection();
             app.UseRouting();
 
