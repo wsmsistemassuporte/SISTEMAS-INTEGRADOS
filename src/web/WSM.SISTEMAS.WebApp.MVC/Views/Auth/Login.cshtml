@@ -7,7 +7,7 @@
 <div class="flex-grow bp-grid flex items-center justify-center px-4 py-12 md:py-16">
     <div class="w-full max-w-md">
         <div class="flex justify-center mb-8">
-            <a asp-controller="Home" asp-action="Index" class="flex items-center gap-2.5" aria-label="WSM Store — Início">
+            <a asp-controller="Home"  asp-action="Index" class="flex items-center gap-2.5" aria-label="WSM Store — Início">
                 <span class="grid place-items-center w-10 h-10 rounded-xl bg-brand text-white font-display font-extrabold text-sm shadow-soft">WSM</span>
                 <span class="text-xl font-bold tracking-tight">WSM <span class="font-medium text-mute">Store</span></span>
             </a>
@@ -17,7 +17,7 @@
             <h1 class="font-display text-2xl font-bold tracking-tight text-center">Entrar na WSM</h1>
             <p class="mt-1.5 text-sm text-mute text-center">Acesse sua conta para acompanhar seus dados.</p>
 
-            <form asp-action="Login" method="post" class="mt-8 space-y-5">
+            <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="mt-8 space-y-5">
                 <input type="hidden" asp-for="ReturnUrl" />
                 @await Component.InvokeAsync("ValidationSummary")
 

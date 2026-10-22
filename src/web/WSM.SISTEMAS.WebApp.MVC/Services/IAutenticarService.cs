@@ -2,7 +2,7 @@ using WSM.SISTEMAS.WebApp.MVC.Models.Auth;
 
 namespace WSM.SISTEMAS.WebApp.MVC.Services
 {
-    public interface IAutenticarApiClient
+    public interface IAutenticarService
     {
         /// <summary>POST /api/auth/login - autentica o usuario e retorna JWT + refresh token.</summary>
         Task<AuthResult> LoginAsync(string email, string password, CancellationToken ct = default);

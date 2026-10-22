@@ -12,7 +12,7 @@ namespace WSM.SISTEMAS.WebApp.MVC.Configuration
             builder.Services.Configure<ApiSettings>(
                 builder.Configuration.GetSection(nameof(ApiSettings)));
 
-            builder.Services.AddHttpClient<IAutenticarApiClient, AutenticarApiClient>((serviceProvider, client) =>
+            builder.Services.AddHttpClient<IAutenticarService, AutenticarService>((serviceProvider, client) =>
             {
                 var settings = serviceProvider.GetRequiredService<IOptions<ApiSettings>>().Value;
                 if (string.IsNullOrWhiteSpace(settings.IdentidadeUrl))

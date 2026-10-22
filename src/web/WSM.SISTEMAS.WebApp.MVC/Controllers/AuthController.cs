@@ -7,12 +7,10 @@ namespace WSM.SISTEMAS.WebApp.MVC.Controllers
 {
     public class AuthController : MainController
     {
-        private readonly IAutenticarApiClient _autenticarApiClient;
+        private readonly IAutenticarService _autenticarApiClient;
         private readonly ILogger<AuthController> _logger;
 
-        public AuthController(
-            IAutenticarApiClient autenticarApiClient,
-            ILogger<AuthController> logger)
+        public AuthController(IAutenticarService autenticarApiClient,ILogger<AuthController> logger)
         {
             _autenticarApiClient = autenticarApiClient;
             _logger = logger;
@@ -22,23 +20,21 @@ namespace WSM.SISTEMAS.WebApp.MVC.Controllers
         [AllowAnonymous]
         public IActionResult Login(string? returnUrl = null)
         {
-            if (User.Identity?.IsAuthenticated == true)
-            {
-                return RedirectToLocal(returnUrl);
-            }
-
-            return View(new LoginViewModel { ReturnUrl = returnUrl });
+            ViewData["ReturnUrl"] = returnUrl;
+            return View();
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, CancellationToken cancellationToken)
+        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null,CancellationToken cancellationToken=default)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
+
+            ViewData["ReturnUrl"] = returnUrl;
 
             var result = await _autenticarApiClient.LoginAsync(model.Email, model.Password, cancellationToken);
             if (!result.Succeeded)
@@ -49,7 +45,9 @@ namespace WSM.SISTEMAS.WebApp.MVC.Controllers
 
             await CookieAuthService.SignInAsync(HttpContext, result, model.RememberMe, _logger);
 
-            return RedirectToLocal(model.ReturnUrl);
+            if (string.IsNullOrEmpty(returnUrl)) return RedirectToAction("Index", "Home");
+
+            return LocalRedirect(returnUrl);
         }
 
         [HttpGet]

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using WSM.SISTEMAS.WebAPI.Core.Extensions;
 using WSM.SISTEMAS.WebApp.MVC.Extensions;
 
 namespace WSM.SISTEMAS.WebApp.MVC.Configuration
@@ -8,7 +9,7 @@ namespace WSM.SISTEMAS.WebApp.MVC.Configuration
         public static WebApplicationBuilder AddMvcConfiguration(this WebApplicationBuilder builder)
         {
             ArgumentNullException.ThrowIfNull(builder);
-
+            builder.Services.AddSingleton<ExceptionMiddleware>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddSingleton<IValidationAttributeAdapterProvider, CpfValidationAttributeAdapterProvider>();
 

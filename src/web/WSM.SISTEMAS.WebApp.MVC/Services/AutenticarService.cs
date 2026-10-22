@@ -7,22 +7,22 @@ using WSM.SISTEMAS.WebApp.MVC.Models.Auth;
 
 namespace WSM.SISTEMAS.WebApp.MVC.Services
 {
-    public class AutenticarApiClient : HttpService, IAutenticarApiClient
+    public class AutenticarService : HttpService, IAutenticarService
     {
         private const string RefreshTokenCookieName = "refreshToken";
 
         private readonly HttpClient _http;
-        private readonly ILogger<AutenticarApiClient> _logger;
+        private readonly ILogger<AutenticarService> _logger;
 
-        public AutenticarApiClient(HttpClient http, ILogger<AutenticarApiClient> logger)
+        public AutenticarService(HttpClient http, ILogger<AutenticarService> logger)
         {
             _http = http;
             _logger = logger;
         }
 
-        public Task<AuthResult> LoginAsync(string email, string password, CancellationToken ct = default)
+        public async Task<AuthResult> LoginAsync(string email, string password, CancellationToken ct = default)
         {
-            return PostAuthAsync(
+            return  await PostAuthAsync(
                 "/api/auth/login",
                 new { email, password },
                 "login",
